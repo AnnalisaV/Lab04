@@ -4,10 +4,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.lab04.model.Model;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.MenuButton;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
@@ -16,9 +18,17 @@ public class FXMLController {
 	private Model model; 
 	
 	public void setModel(Model model) {
-		this.model=model; 
+		
+		this.model= model; 
+		
+		//popolare il menu a tendina
+	ObservableList<String> lista = FXCollections.observableArrayList();
+	  lista.addAll(this.model.getTuttiNomiCorsi()); 
+	  comboBoxCorsi.setItems(lista);
+	  comboBoxCorsi.getItems().add(""); // aggiunta di un campo vuoto
+      comboBoxCorsi.setValue(""); // cosa viene visualizato di partenza 
+		
 	}
-
 
     @FXML
     private ResourceBundle resources;
@@ -27,7 +37,7 @@ public class FXMLController {
     private URL location;
 
     @FXML
-    private MenuButton menuCorsi;
+    private ComboBox<String> comboBoxCorsi;
 
     @FXML
     private Button btnCercaIscrittiCorso;
@@ -76,14 +86,23 @@ public class FXMLController {
 
     }
 
+    /**
+     * Pulizia di tutti i campi
+     * @param event
+     */
     @FXML
     void doReset(ActionEvent event) {
 
+    	txtMatricola.clear(); 
+    	txtNome.clear();
+    	txtCognome.clear();
+    	txtRisultato.clear(); 
+    	
     }
 
     @FXML
     void initialize() {
-        assert menuCorsi != null : "fx:id=\"menuCorsi\" was not injected: check your FXML file 'Scene.fxml'.";
+        assert comboBoxCorsi != null : "fx:id=\"comboBoxCorsi\" was not injected: check your FXML file 'Scene.fxml'.";
         assert btnCercaIscrittiCorso != null : "fx:id=\"btnCercaIscrittiCorso\" was not injected: check your FXML file 'Scene.fxml'.";
         assert txtMatricola != null : "fx:id=\"txtMatricola\" was not injected: check your FXML file 'Scene.fxml'.";
         assert btnCheck != null : "fx:id=\"btnCheck\" was not injected: check your FXML file 'Scene.fxml'.";
@@ -96,3 +115,4 @@ public class FXMLController {
 
     }
 }
+
