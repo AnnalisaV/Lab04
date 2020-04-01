@@ -3,9 +3,10 @@ package it.polito.tdp.lab04.DAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.SQLException; 
 import java.util.LinkedList;
 import java.util.List;
+
 
 import it.polito.tdp.lab04.model.Corso;
 import it.polito.tdp.lab04.model.Studente;
@@ -64,8 +65,34 @@ public class CorsoDAO {
 	/*
 	 * Ottengo tutti gli studenti iscritti al Corso
 	 */
-	public void getStudentiIscrittiAlCorso(Corso corso) {
-		// TODO
+	public List<Studente> getStudentiIscrittiAlCorso(Corso corso) {
+		
+		String sql="SELECT studente.matricola, cognome, studente.nome " + 
+				"FROM corso, iscrizione, studente " + 
+				"WHERE corso.codins= iscrizione.codins AND iscrizione.matricola=studente.matricola " + 
+				"AND corso.nome= ? " ; 
+		
+		List<Studente>studenti= new LinkedList<Studente>(); 
+		
+		try {
+			Connection conn= ConnectDB.getConnection(); 
+			PreparedStatement st= conn.prepareStatement(sql); 
+			st.setString(1, corso.getNome());
+			ResultSet res= st.executeQuery(); 
+			
+			while(res.next()) {
+				Studente s= new Studente(res.getInt("matricola"), res.getString("cognome"), res.getString("nome"));
+				studenti.add(s);
+				
+			}
+			conn.close();
+		}catch(SQLException e) {
+			throw new RuntimeException(); 
+			
+			
+		}
+		return studenti; 
+	
 	}
 
 	/*

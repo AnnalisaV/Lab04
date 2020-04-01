@@ -20,4 +20,8 @@ public class Model {
 	public Studente cercaStudente(Studente s) {
 		return studenteDAO.cercaStudente(s); 
 	}
+	
+	public List<Studente> studentiIscrittiAlCorso(Corso c){
+		return corsoDAO.getStudentiIscrittiAlCorso(c); 																																																														
+	}
 }

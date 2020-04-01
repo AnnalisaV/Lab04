@@ -79,7 +79,7 @@ public class Studente {
 
 	@Override
 	public String toString() {
-		return "Studente [matricola=" + matricola + ", cognome=" + cognome + ", nome=" + nome + "]";
+		return this.matricola+ "  "+this.nome+ "  "+this.cognome; 
 	} 
 
 	

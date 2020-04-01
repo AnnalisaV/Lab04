@@ -1,6 +1,7 @@
 package it.polito.tdp.lab04;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.lab04.model.Corso;
@@ -71,9 +72,31 @@ public class FXMLController {
 
     }
 
+    /** 
+     * Selezionando un corso, viene fornito l'elenco degli studenti ad esso iscritti
+     * @param event
+     */
     @FXML
     void doCercaIscrittiCorso(ActionEvent event) {
 
+    	if (this.comboBoxCorsi.getValue()==null) {
+    		txtRisultato.appendText("SELEZIONARE UN CORSO !!! \n");
+    		return; 
+    	}
+    	
+    	// e' stato selezionato un corso
+    	txtRisultato.clear();
+    	txtRisultato.appendText("Studenti iscritti al corso di  : "+this.comboBoxCorsi.getValue().getNome()+"\n");
+    	List<Studente> listaStudenti= this.model.studentiIscrittiAlCorso(this.comboBoxCorsi.getValue()); 
+    	
+    	if (listaStudenti.size()==0) {
+    		txtRisultato.appendText("Non vi sono studenti iscritti al corso \n");
+    	}
+    	else {
+    	for (Studente s : listaStudenti) {
+    		txtRisultato.appendText(s+"\n");
+    	}
+    	}
     }
 
     /**
