@@ -3,7 +3,9 @@ package it.polito.tdp.lab04;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.lab04.model.Corso;
 import it.polito.tdp.lab04.model.Model;
+import it.polito.tdp.lab04.model.Studente;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,11 +24,9 @@ public class FXMLController {
 		this.model= model; 
 		
 		//popolare il menu a tendina
-	ObservableList<String> lista = FXCollections.observableArrayList();
-	  lista.addAll(this.model.getTuttiNomiCorsi()); 
-	  comboBoxCorsi.setItems(lista);
-	  comboBoxCorsi.getItems().add(""); // aggiunta di un campo vuoto
-      comboBoxCorsi.setValue(""); // cosa viene visualizato di partenza 
+	  comboBoxCorsi.getItems().addAll(this.model.getTuttiCorsi()); 
+	  comboBoxCorsi.getItems().add(new Corso("", 0, "", 0)); // aggiungo una riga vuota
+      comboBoxCorsi.setValue(null); // cosa viene visualizato di partenza 
 		
 	}
 
@@ -37,7 +37,7 @@ public class FXMLController {
     private URL location;
 
     @FXML
-    private ComboBox<String> comboBoxCorsi;
+    private ComboBox<Corso> comboBoxCorsi;
 
     @FXML
     private Button btnCercaIscrittiCorso;
@@ -76,9 +76,44 @@ public class FXMLController {
 
     }
 
+    /**
+     * Completamento automatico : data una matricola viene fornito il nome ed il cognome dello
+     * studente corrispondente 
+     * @param event 
+     */
     @FXML
     void doCheck(ActionEvent event) {
 
+    	String matricolaInput= txtMatricola.getText(); 
+    	
+    	if (matricolaInput.length()==0) {
+    		txtRisultato.appendText("Campo matricola vuoto! Inserire una matricola. \n");
+    		return; 
+    	}
+    	int matricola; 
+    	
+    	try {
+    		
+    		matricola= Integer.parseInt(matricolaInput); 
+    		
+    	}catch(NumberFormatException nfe) {
+    		
+    		txtRisultato.appendText("Devi inserire una matricola (NUMERI) !! \n");
+    		return; 
+    	}
+    	
+    	
+    	Studente s= this.model.cercaStudente(new Studente (matricola,null,null)); 
+    	if (s== null) {
+    		txtRisultato.appendText("Studente non trovato!\n");
+    	}
+    	else {
+    		// esiste lo studente quindi si fa auto compilazione
+    		txtNome.setText(s.getNome());
+    		txtCognome.setText(s.getCognome());
+    	}
+    	
+    	
     }
 
     @FXML
