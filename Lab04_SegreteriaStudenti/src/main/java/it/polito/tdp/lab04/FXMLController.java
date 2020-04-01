@@ -67,8 +67,54 @@ public class FXMLController {
     @FXML
     private Button btnReset;
 
+    /**
+     * Data la matricola di uno {@code Studente}, elenca i corsi ai quali e' iscritto
+     * @param event
+     */
     @FXML
     void doCercaCorsi(ActionEvent event) {
+    	
+          String matricolaInput= txtMatricola.getText(); 
+    	
+    	if (matricolaInput.length()==0) {
+    		txtRisultato.appendText("Campo matricola vuoto! Inserire una matricola. \n");
+    		return; 
+    	}
+    	int matricola; 
+    	
+        try {
+    	       matricola= Integer.parseInt(matricolaInput); 
+    		
+    	}catch(NumberFormatException nfe) {
+    		
+    		txtRisultato.appendText("Devi inserire una matricola (NUMERI) !! \n");
+    		return; 
+    	}
+    	
+    	
+    	Studente s= this.model.cercaStudente(new Studente (matricola,null,null)); 
+    	if (s== null) {
+    		txtRisultato.appendText("ERORE, Studente inesistente!\n");
+    	}
+    	else {
+    		// esiste lo studente 
+    		txtRisultato.appendText("Studente "+s.getNome()+" "+s.getCognome()+" iscritto ai corsi:\n");
+        	List<Corso> listaCorsi= this.model.corsiDelloStudente(s);
+
+        	if (listaCorsi.size()==0) {
+        		txtRisultato.appendText("Non vi sono corsi ai quali lo studente e' iscritto \n");
+        	}
+        	else {
+        	for (Corso c : listaCorsi) {
+        		txtRisultato.appendText(c+"\n");
+        	}
+    		
+    	}
+    	}
+    	
+    	
+    	
+    	
 
     }
 

@@ -24,4 +24,8 @@ public class Model {
 	public List<Studente> studentiIscrittiAlCorso(Corso c){
 		return corsoDAO.getStudentiIscrittiAlCorso(c); 																																																														
 	}
+
+	public List<Corso> corsiDelloStudente(Studente s) {
+		return studenteDAO.getCorsiStudente(s);
+	}
 }
