@@ -74,6 +74,8 @@ public class FXMLController {
     @FXML
     void doCercaCorsi(ActionEvent event) {
     	
+    	txtRisultato.clear();
+    	
           String matricolaInput= txtMatricola.getText(); 
     	
     	if (matricolaInput.length()==0) {
@@ -94,7 +96,7 @@ public class FXMLController {
     	
     	Studente s= this.model.cercaStudente(new Studente (matricola,null,null)); 
     	if (s== null) {
-    		txtRisultato.appendText("ERORE, Studente inesistente!\n");
+    		txtRisultato.appendText("ERRORE, Studente inesistente!\n");
     	}
     	else {
     		// esiste lo studente 
@@ -153,6 +155,8 @@ public class FXMLController {
     @FXML
     void doCheck(ActionEvent event) {
 
+    	txtRisultato.clear();
+    	
     	String matricolaInput= txtMatricola.getText(); 
     	
     	if (matricolaInput.length()==0) {
@@ -185,9 +189,55 @@ public class FXMLController {
     	
     }
 
+    /**
+     * Dato un corso ed una matricola, verifica se lo studente e' iscritto a quel corso 
+     * se così non fosse lo iscrive 
+     * @param event
+     */
     @FXML
     void doIscrivi(ActionEvent event) {
+    	
+    	txtRisultato.clear(); 
+    	
+    	//controllo che vi sia il corso 
+    	if (this.comboBoxCorsi.getValue()==null) {
+    		txtRisultato.appendText("SELEZIONARE UN CORSO !!! \n");
+    		return; 
+    	}
+    	//controllo l'input dell'utente 
+         String matricolaInput= txtMatricola.getText(); 
+    	
+    	if (matricolaInput.length()==0) {
+    		txtRisultato.appendText("Campo matricola vuoto! Inserire una matricola. \n");
+    		return; 
+    	}
+        int matricola; 
+    	
+    	try {
+    		
+    		matricola= Integer.parseInt(matricolaInput); 
+    		
+    	}catch(NumberFormatException nfe) {
+    		
+    		txtRisultato.appendText("Devi inserire una matricola (NUMERI) !! \n");
+    		return; 
+    	}
 
+    	Studente s= this.model.cercaStudente(new Studente (matricola,null,null)); 
+    	if (s== null) {
+    		txtRisultato.appendText("Studente non trovato!\n");
+    		return; 
+    	}
+    	else {
+    		// c'e' il corso e c'e' lo studente 
+    		// -> verifica se sono associati
+    		if (this.model.studenteIscrittoAlCorso(s, this.comboBoxCorsi.getValue()))
+    			txtRisultato.appendText("Lo studente "+s.getNome()+" "+s.getCognome()+" e' iscritto al corso "+this.comboBoxCorsi.getValue().getNome());
+    		else txtRisultato.appendText("Studente non iscritto al corso \n");
+    	}
+    	
+
+    	
     }
 
     /**

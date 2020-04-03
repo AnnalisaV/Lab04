@@ -104,4 +104,37 @@ public class CorsoDAO {
 		return false;
 	}
 
+
+	public boolean studenteIscrittoAlCorso(Studente s, Corso c) {
+		
+		String sql= "SELECT studente.matricola, iscrizione.codins FROM iscrizione, studente " + 
+				"WHERE studente.matricola=iscrizione.matricola " + 
+				"AND studente.matricola= ? " + 
+				"AND iscrizione.codins= ?";
+		
+		// no struttura dati perche' voglio solo sapere sì o no (esiste)
+				try {
+					Connection conn= ConnectDB.getConnection(); 
+					PreparedStatement st= conn.prepareStatement(sql); 
+					st.setInt(1, s.getMatricola());
+					st.setString(2,  c.getCodins());
+					
+					ResultSet res= st.executeQuery(); 
+					
+					if(res.next()) {
+						conn.close(); 
+						//ok ha la riga quindi una soluzione l'ha trovata 
+						return true; 
+						
+					}else {
+						conn.close(); 
+						return false; // non ha trovato manco una riga 
+					}
+					
+					}catch(SQLException e) {
+					throw new RuntimeException(); 
+				}
+	
+	}
+
 }
