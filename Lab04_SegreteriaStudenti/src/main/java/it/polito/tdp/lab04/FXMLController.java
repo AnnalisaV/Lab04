@@ -232,8 +232,15 @@ public class FXMLController {
     		// c'e' il corso e c'e' lo studente 
     		// -> verifica se sono associati
     		if (this.model.studenteIscrittoAlCorso(s, this.comboBoxCorsi.getValue()))
-    			txtRisultato.appendText("Lo studente "+s.getNome()+" "+s.getCognome()+" e' iscritto al corso "+this.comboBoxCorsi.getValue().getNome());
-    		else txtRisultato.appendText("Studente non iscritto al corso \n");
+    			txtRisultato.appendText("Lo studente "+s.getNome()+" "+s.getCognome()+" e' gia' iscritto al corso "+this.comboBoxCorsi.getValue().getNome());
+    		else {
+    			// lo iscrivo 
+    			if(this.model.iscriviStudente(s, this.comboBoxCorsi.getValue())) {
+    				txtRisultato.appendText("Iscrizione completata!\n");
+    			}
+    			else
+    			txtRisultato.appendText("Iscrizione non andata a buon fine \n");
+    		}
     	}
     	
 

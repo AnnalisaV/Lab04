@@ -137,4 +137,30 @@ public class CorsoDAO {
 	
 	}
 
+
+	public boolean iscriviStudente(Studente s, Corso c) {
+		String sql ="INSERT INTO iscrizione (matricola, codins) " + 
+				"VALUES (?, ?) "; 
+		boolean modifica= false; 
+		try {
+			Connection conn= ConnectDB.getConnection(); 
+			PreparedStatement st= conn.prepareStatement(sql); 
+			st.setInt(1, s.getMatricola());
+			st.setString(2,  c.getCodins());
+			
+			
+			int righe= st.executeUpdate(); // ritorna il numero di righe che sono state modificate 
+			
+			if(righe!=0) {
+				// allora ne ha modificata qualcuna quindi tutto e' andato bene 
+				modifica=true; 
+			}
+			
+			conn.close();
+			}catch(SQLException e) {
+			throw new RuntimeException(); 
+		}
+		return modifica; 
+	}
+
 }

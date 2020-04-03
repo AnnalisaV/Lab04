@@ -33,4 +33,8 @@ public class Model {
 		
 		return corsoDAO.studenteIscrittoAlCorso(s, c);
 	}
+
+	public boolean iscriviStudente(Studente s, Corso c) {
+		return corsoDAO.iscriviStudente(s, c);
+	}
 }
